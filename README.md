@@ -10,7 +10,9 @@ javascript:(function(){var el=document.createElement('script');el.type='text/jav
 
 ##Background
 
-Concived as part of a set of [data visualization experiments](http://lab.speedcurve.com) which re-imagining the front-end performance waterfall chart by Mark Zeman from [SpeedCurve](http://speedcurve.com) presented at Velocity New York 2014.
+![Example Heatmap](http://zeman.github.io/perfmap/example.jpg)
+
+Concived as part of a set of [data visualization experiments](http://lab.speedcurve.com) which re-imagined the front-end performance waterfall chart by Mark Zeman from [SpeedCurve](http://speedcurve.com) presented at [Velocity New York 2014.](http://speedcurve.com/blog/velocity-a-better-waterfall-chart/)
 
 ##Works In
 
