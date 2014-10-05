@@ -8,6 +8,8 @@ Just add the bookmarklet below to your bookmarks bar.
 javascript:(function(){var el=document.createElement('script');el.type='text/javascript';el.src='//zeman.github.io/perfmap/perfmap.js';document.getElementsByTagName('body')[0].appendChild(el);})();
 ```
 
+The heatmap colours and the first ms value indicate at what point in the page load the image finished loading. It's a good indicator of user expereince... "It took 3450ms before the user saw this image." The second value in brackets is the time it took the browser to load that specific image.
+
 ##Example
 
 ![Example Heatmap](http://zeman.github.io/perfmap/example.jpg)
