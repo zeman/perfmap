@@ -8,9 +8,11 @@ Just add the bookmarklet below to your bookmarks bar.
 javascript:(function(){var el=document.createElement('script');el.type='text/javascript';el.src='//zeman.github.io/perfmap/perfmap.js';document.getElementsByTagName('body')[0].appendChild(el);})();
 ```
 
-##Background
+##Example
 
 ![Example Heatmap](http://zeman.github.io/perfmap/example.jpg)
+
+##Background
 
 Concived as part of a set of [data visualization experiments](http://lab.speedcurve.com) which re-imagined the front-end performance waterfall chart by Mark Zeman from [SpeedCurve](http://speedcurve.com) presented at [Velocity New York 2014.](http://speedcurve.com/blog/velocity-a-better-waterfall-chart/)
 
@@ -24,7 +26,7 @@ Chrome
 - Hover state with more detail on the timimgs of an individual resource
 - Add strip across top of browser with page level timings and browser events
 - User timing, pull out and highlight any elements with associated user timing events
-- Expand top nav to show full waterfall chart of all resources. Combine with Andy's waterfall bookmarklet?
+- Expand top nav to show full waterfall chart of all resources. Combine with Andy's [waterfall bookmarklet?](https://github.com/andydavies/waterfall)
 
 ##Change Log
 
