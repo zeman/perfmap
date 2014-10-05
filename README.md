@@ -5,7 +5,7 @@ A bookmarklet to create a front-end performance heatmap of resources loaded in t
 Just add the bookmarklet below to your bookmarks bar.
 
 ```
-javascript:(function(){var el=document.createElement('script');el.type='text/javascript';el.src='//zeman.github.io/perfmap/bookmarklet/perfmap.js';document.getElementsByTagName('body')[0].appendChild(el);})();
+javascript:(function(){var el=document.createElement('script');el.type='text/javascript';el.src='//zeman.github.io/perfmap/perfmap.js';document.getElementsByTagName('body')[0].appendChild(el);})();
 ```
 
 ##Background
