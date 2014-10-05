@@ -1,4 +1,4 @@
-#PerfMap - In browser front-end performance heatmap
+#PerfMap: front-end performance heatmap
 
 A bookmarklet to create a front-end performance heatmap of resources loaded in the browser using the Resource Timing API.
 
@@ -16,7 +16,7 @@ The heatmap colours and the first ms value indicate at what point in the page lo
 
 ##Background
 
-Concived as part of a set of [data visualization experiments](http://lab.speedcurve.com) which re-imagined the front-end performance waterfall chart by Mark Zeman from [SpeedCurve](http://speedcurve.com) presented at [Velocity New York 2014.](http://speedcurve.com/blog/velocity-a-better-waterfall-chart/)
+Conceived as part of a set of [data visualization experiments](http://lab.speedcurve.com) which re-imagined the front-end performance waterfall chart by Mark Zeman from [SpeedCurve](http://speedcurve.com) presented at [Velocity New York 2014.](http://speedcurve.com/blog/velocity-a-better-waterfall-chart/)
 
 ##Works In
 
@@ -25,6 +25,7 @@ Chrome
 ##To Do
 
 - Deal with fixed position elements (calling all front-end ninjas, send me your thoughts on how best to do this)
+- Try and identify background images
 - Hover state with more detail on the timimgs of an individual resource
 - Add strip across top of browser with page level timings and browser events
 - User timing, pull out and highlight any elements with associated user timing events
@@ -36,4 +37,4 @@ Chrome
 
 ##Thanks
 
-Big thanks to Steve Souders who was inspired enough to whip up the intial code structure while simultaneously participating at WebPerfDays NY.
+Big thanks to Steve Souders who was inspired enough to whip up the intial code structure while simultaneously participating at WebPerfDays NY. Clever cookie!
