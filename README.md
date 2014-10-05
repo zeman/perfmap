@@ -25,7 +25,8 @@ Chrome
 ##To Do
 
 - Deal with fixed position elements (calling all front-end ninjas, send me your thoughts on how best to do this)
-- Try and identify background images
+- Try and identify background images in CSS
+- Crawl iframe images
 - Hover state with more detail on the timimgs of an individual resource
 - Add strip across top of browser with page level timings and browser events
 - User timing, pull out and highlight any elements with associated user timing events
