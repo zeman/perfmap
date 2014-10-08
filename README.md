@@ -11,7 +11,7 @@ Wait for a page to fully load and then click the bookmarklet to overlay a perfor
 
 The heatmap colours and the first ms value indicate at what point in the page load the image finished loading. It's a good indicator of user expereince... "It took 3450ms before the user saw this image." The second value in brackets is the time it took the browser to load that specific image.
 
-The legend attached to the bottom of the page show timmings for the full page load and hovering over a coloured area on the heatmap will move the timeline indicator to show you when that image was fully loaded. 
+The legend attached to the bottom of the page show timings for the full page load and hovering over a coloured area on the heatmap will move the timeline indicator to show you when that image was fully loaded. 
 
 ##Example
 
