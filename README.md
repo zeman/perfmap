@@ -1,6 +1,6 @@
 #PerfMap: front-end performance heatmap
 
-A bookmarklet to create a front-end performance heatmap of resources loaded in the browser using the Resource Timing API.
+A bookmarklet to create a front-end performance heatmap of resources loaded in the browser using the Resource Timing API. (A browser with ![support for the Resource Timing API](http://caniuse.com/#feat=resource-timing) is required).
 
 Just add the bookmarklet below to your bookmarks bar.
 
