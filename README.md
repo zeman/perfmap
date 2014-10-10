@@ -1,4 +1,4 @@
-#Try it out with a Chrome Extension
+### Chrome Extension to try PerfMap out
 
 https://chrome.google.com/webstore/detail/perfmap/hgpnhiajcdppfbogcpfdgcceepgkhdmk?hl=en&gl=GB
 
