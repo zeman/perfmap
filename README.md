@@ -5,8 +5,9 @@ A bookmarklet to create a front-end performance heatmap of resources loaded in t
 Just add the bookmarklet below to your bookmarks bar.
 
 ```
-javascript:(function(){var el=document.createElement('script');el.type='text/javascript';el.src='//zeman.github.io/perfmap/perfmap.js';document.getElementsByTagName('body')[0].appendChild(el);})();
+javascript:(function(){var el=document.createElement('script');el.src='https://zeman.github.io/perfmap/perfmap.js';document.body.appendChild(el);})();
 ```
+
 Wait for a page to fully load and then click the bookmarklet to overlay a performance heatmap.
 
 The heatmap colours and the first ms value indicate at what point in the page load the image finished loading. It's a good indicator of user expereince... "It took 3450ms before the user saw this image." The second value in brackets is the time it took the browser to load that specific image.
