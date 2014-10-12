@@ -5,7 +5,7 @@ A bookmarklet to create a front-end performance heatmap of resources loaded in t
 Just add the bookmarklet below to your bookmarks bar.
 
 ```javascript
-javascript:(function(){var el=document.createElement('script');el.type='text/javascript';el.src='//zeman.github.io/perfmap/perfmap.js';document.getElementsByTagName('body')[0].appendChild(el);})();
+javascript:(function(){var el=document.createElement('script');el.src='https://zeman.github.io/perfmap/perfmap.js';document.getElementsByTagName('body')[0].appendChild(el);})();
 ```
 Wait for a page to fully load and then click the bookmarklet to overlay a performance heatmap.
 
@@ -35,9 +35,10 @@ Chrome
 
 ##Change Log
 
-2014-10-06 First push of rough proof of concept
-2014-10-07 Added background-image support
-2014-10-08 Added interactive legend with page level timing and timeline head on overlay hover
+- 2014-10-06 First push of rough proof of concept
+- 2014-10-07 Added background-image support
+- 2014-10-08 Added interactive legend with page level timing and timeline head on overlay hover
+- 2014-10-12 Ignore elements with visibility:hidden, check for viewport sized images and treat like a body image, design tweaks
 
 ##Thanks
 
