@@ -1,3 +1,7 @@
+### Chrome Extension to try PerfMap out
+
+https://chrome.google.com/webstore/detail/perfmap/hgpnhiajcdppfbogcpfdgcceepgkhdmk?hl=en&gl=GB
+
 #PerfMap: front-end performance heatmap
 
 A bookmarklet to create a front-end performance heatmap of resources loaded in the browser using the Resource Timing API. A browser with [support for the Resource Timing API](http://caniuse.com/#feat=resource-timing) is required.
