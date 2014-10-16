@@ -134,6 +134,10 @@ function getCumulativeOffset(obj, url) {
     };
 }
 
+if (!performance.getEntriesByName) {
+    throw new Error("Resource Timing API unavailable\nIf you're using Firefox, you might need to set the dom.enable_resource_timing flag to true.");
+}
+
 // give visual feedback asap
 var loading = document.createElement("div");
 loading.id = "perfmap-loading";
@@ -155,6 +159,13 @@ if (window.chrome && window.chrome.loadTimes) {
 	var firstPaintLeft = (firstPaint / loaded)*100;
 }
 
+var firstPaintDisplay;
+if (firstPaint) {
+	firstPaintDisplay = parseInt(firstPaint) + "ms";
+} else {
+	firstPaintDisplay = "unknown";
+}
+
 // remove any exisiting "perfmap" divs on second click
 var elements = document.getElementsByClassName("perfmap");
 while(elements.length > 0){
@@ -165,7 +176,7 @@ while(elements.length > 0){
 var perfmap = document.createElement("div");
 perfmap.id = "perfmap";
 perfmap.style.cssText = "position: fixed; width:100%; bottom:0; left:0; z-index:5000; height: 25px; color:#fff; font-family:\"Helvetica Neue\",sans-serif; font-size:14px; font-weight:800; line-height:14px;";
-perfmap.innerHTML = "<div style='width:16.666666667%; height: 50px; float:left; background-color:#1a9850;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#66bd63;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#a6d96a;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#fdae61;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#f46d43;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#d73027;'></div><div style='position:absolute; z-index:2; right:0px; padding-top:5px; padding-right:10px;height:100%;color:#fff;'>Fully Loaded " + parseInt(loaded) + "ms</div><div style='position:absolute; z-index:3; left:" + firstPaintLeft + "%; padding-top:5px; border-left:2px solid white;padding-left:5px;height:100%;color:#fff;'>First Paint " + parseInt(firstPaint) + "ms</div><div id='perfmap-timeline' style='position:absolute; z-index:4; left:-100px; border-left:2px solid white;height:100%;'></div>";
+perfmap.innerHTML = "<div style='width:16.666666667%; height: 50px; float:left; background-color:#1a9850;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#66bd63;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#a6d96a;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#fdae61;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#f46d43;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#d73027;'></div><div style='position:absolute; z-index:2; right:0px; padding-top:5px; padding-right:10px;height:100%;color:#fff;'>Fully Loaded " + parseInt(loaded) + "ms</div><div style='position:absolute; z-index:3; left:" + firstPaintLeft + "%; padding-top:5px; border-left:2px solid white;padding-left:5px;height:100%;color:#fff;'>First Paint " + firstPaintDisplay + "</div><div id='perfmap-timeline' style='position:absolute; z-index:4; left:-100px; border-left:2px solid white;height:100%;'></div>";
 document.body.appendChild(perfmap);
 
 // build heatmap
