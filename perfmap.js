@@ -1,11 +1,30 @@
 var gZeroLeft = 0;
 var gZeroTop = 0;
 var gWinWidth = window.innerWidth || document.documentElement.clientWidth;
+var hArr = [{
+    threashold: 0.16,
+    value: "#1a9850"
+}, {
+    threashold: 0.32,
+    value: "#66bd63"
+}, {
+    threashold: 0.48,
+    value: "#a6d964"
+}, {
+    threashold: 0.64,
+    value: "#fdae61"
+}, {
+    threashold: 0.8,
+    value: "#f46d43"
+}, {
+    threashold: 1.1,
+    value: "#d73027"
+}];
 
 function findImages() {
     var aElems = document.getElementsByTagName('*');
     var re = /url\((http.*)\)/ig;
-    for ( var i=0, len = aElems.length; i < len; i++ ) {
+    for (var i = 0, len = aElems.length; i < len; i++) {
         var elem = aElems[i];
         var style = window.getComputedStyle(elem);
         var url = elem.src || elem.href;
@@ -14,105 +33,102 @@ function findImages() {
         var body = 0;
         re.lastIndex = 0; // reset state of regex so we catch repeating spritesheet elements
         if (elem.tagName == 'IMG') {
-        	hasImage = 1;
-		}
-		if (style['background-image']) {
-        	var backgroundImage = style['background-image'];
-			var matches = re.exec(style['background-image']);
-			if (matches && matches.length > 1){
-				url = backgroundImage.substring(4);
-				url = url.substring(0, url.length - 1);
-				hasImage = 1;
-				if(elem.tagName == 'BODY'){
-					body = 1;
-				}
-			}
-		}
-		if (style['visibility'] == "hidden") {
-			hasImage = 0;
-		}
-		if(hasImage == 1){
-	        if ( url ) {
-	            var entry = performance.getEntriesByName(url)[0];
-	            if ( entry ) {
-	                var xy = getCumulativeOffset(elem, url);
-	                var wh = elem.getBoundingClientRect();
-	                var width = wh.width;
-	                var height = wh.height;
-	                if(width > 10){
-		                if(height > 10){
-			                placeMarker(xy, width, height, entry, body, url);
-		                }
-	                }
-	            }
-	        }
-	    }
+            hasImage = 1;
+        }
+        if (style['background-image']) {
+            var backgroundImage = style['background-image'];
+            var matches = re.exec(style['background-image']);
+            if (matches && matches.length > 1) {
+                url = backgroundImage.substring(4);
+                url = url.substring(0, url.length - 1);
+                hasImage = 1;
+                if (elem.tagName == 'BODY') {
+                    body = 1;
+                }
+            }
+        }
+        if (style['visibility'] == "hidden") {
+            hasImage = 0;
+        }
+        if (hasImage == 1) {
+            if (url) {
+                var entry = performance.getEntriesByName(url)[0];
+                if (entry) {
+                    var xy = getCumulativeOffset(elem, url);
+                    var wh = elem.getBoundingClientRect();
+                    var width = wh.width;
+                    var height = wh.height;
+                    if (width > 10) {
+                        if (height > 10) {
+                            placeMarker(xy, width, height, entry, body, url);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 function placeMarker(xy, width, height, entry, body, url) {
-	var heat = entry.responseEnd / loaded;
-	// adjust size of fonts/padding based on width of overlay
-	if(width < 170){
-		var padding = 12;
-		var size = 12;
-	}else if(width > 400){
-		var padding = 13;
-		var size = 26;
-	}else{
-		var padding = 9;
-		var size = 18;
-	}
-	// check for overlay that matches viewport and assume it's like a background image on body
-	if(width == document.documentElement.clientWidth){
-		if(height >= document.documentElement.clientHeight){
-			body = 1;
-		}
-	}
-	// adjust opacity if it's the body element and position label top right
-	if(body == 1){
-		var opacity = 0.6;
-		var size = 18;
-		var align = "right";
-		var paddingTop = 10;
-		var bodyText = "BODY ";
-	}else{
-		var opacity = 0.925;
-		var align = "center";
-		var paddingTop = (height/2)-padding;
-		var bodyText = "";
-	}
+    var heat = entry.responseEnd / loaded;
+    // adjust size of fonts/padding based on width of overlay
+    if (width < 170) {
+        var padding = 12;
+        var size = 12;
+    } else if (width > 400) {
+        var padding = 13;
+        var size = 26;
+    } else {
+        var padding = 9;
+        var size = 18;
+    }
+    // check for overlay that matches viewport and assume it's like a background image on body
+    if (width == document.documentElement.clientWidth) {
+        if (height >= document.documentElement.clientHeight) {
+            body = 1;
+        }
+    }
+    // adjust opacity if it's the body element and position label top right
+    if (body == 1) {
+        var opacity = 0.6;
+        var size = 18;
+        var align = "right";
+        var paddingTop = 10;
+        var bodyText = "BODY ";
+    } else {
+        var opacity = 0.925;
+        var align = "center";
+        var paddingTop = (height / 2) - padding;
+        var bodyText = "";
+    }
     var marker = document.createElement("div");
     marker.className = "perfmap";
     marker.setAttribute("data-ms", parseInt(entry.responseEnd));
     marker.setAttribute("data-body", body);
-    marker.style.cssText = "position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: " + size + "px; font-weight:800; font-family:\"Helvetica Neue\",sans-serif; text-align:" + align + "; opacity: " + opacity + "; " + heatmap(heat) + " top: " + xy.top + "px; left: " + xy.left + "px; width: " + width + "px; height:" + height + "px; padding-top:" + paddingTop + "px; z-index: 4000;";
-    if(width > 50){
-    	if(height > 15 ){
-    		marker.innerHTML = bodyText + parseInt(entry.responseEnd) + "ms (" + parseInt(entry.duration) + "ms)";
-    	}
+    marker.style.cssText = "position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: " + size + "px; font-weight:800; font-family:\"Helvetica Neue\",sans-serif; text-align:" + align + "; opacity: " + opacity + "; background: " + heatmap(heat) + " top: " + xy.top + "px; left: " + xy.left + "px; width: " + width + "px; height:" + height + "px; padding-top:" + paddingTop + "px; z-index: 4000;";
+    if (width > 50) {
+        if (height > 15) {
+            marker.innerHTML = bodyText + parseInt(entry.responseEnd) + "ms (" + parseInt(entry.duration) + "ms)";
+        }
     }
     document.body.appendChild(marker);
 }
 
 function heatmap(heat) {
-    if ( heat < 0.16 ) {
-        return "background: #1a9850;"
+    function findIndex(array, heat, predicate) {
+        var index = -1,
+            length = array ? array.length : 0;
+        while (++index < length) {
+            if (predicate(array[index], index, array)) {
+                return array[index];
+            }
+        }
+        return array[length - 1];
     }
-    else if ( heat < 0.32 ) {
-        return "background: #66bd63;"
-    }
-    else if ( heat < 0.48 ) {
-        return "background: #a6d96a;"
-    }
-    else if ( heat < 0.64 ) {
-        return "background: #fdae61;"
-    }
-    else if ( heat < 0.8 ) {
-        return "background: #f46d43;"
-    }else{
-	    return "background: #d73027;"
-    }
+    
+    return findIndex(hArr, function(chr) {
+        return heat < chr.threashold;
+    });
 }
 
 function getCumulativeOffset(obj, url) {
@@ -121,10 +137,10 @@ function getCumulativeOffset(obj, url) {
     if (obj.offsetParent) {
         do {
             left += obj.offsetLeft;
-            top  += obj.offsetTop;
+            top += obj.offsetTop;
         } while (obj = obj.offsetParent);
     }
-    if ( 0 == top ) {
+    if (0 == top) {
         left += gZeroLeft;
         top += gZeroTop;
     }
@@ -146,18 +162,18 @@ var loaded = performance.timing.loadEventEnd - performance.timing.navigationStar
 
 // backend
 var backend = performance.timing.responseEnd - performance.timing.navigationStart;
-var backendLeft = (backend / loaded)*100;
+var backendLeft = (backend / loaded) * 100;
 
 // first paint in chrome from https://github.com/addyosmani/timing.js
 if (window.chrome && window.chrome.loadTimes) {
-	var paint = window.chrome.loadTimes().firstPaintTime * 1000;
-	var firstPaint = paint - (window.chrome.loadTimes().startLoadTime*1000);
-	var firstPaintLeft = (firstPaint / loaded)*100;
+    var paint = window.chrome.loadTimes().firstPaintTime * 1000;
+    var firstPaint = paint - (window.chrome.loadTimes().startLoadTime * 1000);
+    var firstPaintLeft = (firstPaint / loaded) * 100;
 }
 
 // remove any exisiting "perfmap" divs on second click
 var elements = document.getElementsByClassName("perfmap");
-while(elements.length > 0){
+while (elements.length > 0) {
     elements[0].parentNode.removeChild(elements[0]);
 }
 
@@ -177,19 +193,19 @@ loading.remove();
 // mouse events to move timeline around on hover
 var elements = document.getElementsByClassName("perfmap");
 var timeline = document.getElementById('perfmap-timeline');
-for ( var i=0, len = elements.length; i < len; i++ ) {
-	elements[i].onmouseover = function(){
-    	var timelineLeft = document.documentElement.clientWidth * (this.dataset.ms / loaded);
-    	if(this.dataset.body != "1"){
-			this.style.opacity = 1;
-    	}
-    	timeline.style.cssText = "opacity:1; transition: 0.5s ease-in-out; transform: translate("+ parseInt(timelineLeft) + "px,0); position:absolute; z-index:4; border-left:2px solid white; height:100%;";
+for (var i = 0, len = elements.length; i < len; i++) {
+    elements[i].onmouseover = function() {
+        var timelineLeft = document.documentElement.clientWidth * (this.dataset.ms / loaded);
+        if (this.dataset.body != "1") {
+            this.style.opacity = 1;
+        }
+        timeline.style.cssText = "opacity:1; transition: 0.5s ease-in-out; transform: translate(" + parseInt(timelineLeft) + "px,0); position:absolute; z-index:4; border-left:2px solid white; height:100%;";
     }
-    elements[i].onmouseout = function(){		
-    	var timelineLeft = document.documentElement.clientWidth * (this.dataset.ms / loaded);
-    	if(this.dataset.body != "1"){
-    		this.style.opacity = 0.925;
-    	}
-    	timeline.style.cssText = "opacity:0; transition: 0.5s ease-in-out; transform: translate("+ parseInt(timelineLeft) + "px,0); position:absolute; z-index:4; border-left:2px solid white; height:100%;";
+    elements[i].onmouseout = function() {
+        var timelineLeft = document.documentElement.clientWidth * (this.dataset.ms / loaded);
+        if (this.dataset.body != "1") {
+            this.style.opacity = 0.925;
+        }
+        timeline.style.cssText = "opacity:0; transition: 0.5s ease-in-out; transform: translate(" + parseInt(timelineLeft) + "px,0); position:absolute; z-index:4; border-left:2px solid white; height:100%;";
     }
 }
