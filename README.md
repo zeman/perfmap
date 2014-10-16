@@ -2,7 +2,7 @@
 
 A bookmarklet and [Chrome extension](https://chrome.google.com/webstore/detail/perfmap/hgpnhiajcdppfbogcpfdgcceepgkhdmk?hl=en&gl=GB) to create a front-end performance heatmap of resources loaded in the browser using the Resource Timing API. A browser with [support for the Resource Timing API](http://caniuse.com/#feat=resource-timing) is required.
 
-### Bookmarklet
+#### Bookmarklet
 
 Just add the bookmarklet below to your bookmarks bar.
 
@@ -10,7 +10,7 @@ Just add the bookmarklet below to your bookmarks bar.
 javascript:(function(){var el=document.createElement('script');el.src='https://zeman.github.io/perfmap/perfmap.js';document.body.appendChild(el);})();
 ```
 
-### Chrome Extension
+#### Chrome Extension
 
 Or grab the [Chrome extension](https://chrome.google.com/webstore/detail/perfmap/hgpnhiajcdppfbogcpfdgcceepgkhdmk?hl=en&gl=GB) wrapped by [Umar Hansa](https://github.com/umaar)
 
