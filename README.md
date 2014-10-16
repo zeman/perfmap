@@ -1,17 +1,22 @@
-### Chrome Extension to try PerfMap out
-
-https://chrome.google.com/webstore/detail/perfmap/hgpnhiajcdppfbogcpfdgcceepgkhdmk?hl=en&gl=GB
-
 #PerfMap: front-end performance heatmap
 
-A bookmarklet to create a front-end performance heatmap of resources loaded in the browser using the Resource Timing API. A browser with [support for the Resource Timing API](http://caniuse.com/#feat=resource-timing) is required.
+A bookmarklet and [Chrome extension](https://chrome.google.com/webstore/detail/perfmap/hgpnhiajcdppfbogcpfdgcceepgkhdmk?hl=en&gl=GB) to create a front-end performance heatmap of resources loaded in the browser using the Resource Timing API. A browser with [support for the Resource Timing API](http://caniuse.com/#feat=resource-timing) is required.
+
+### Bookmarklet
 
 Just add the bookmarklet below to your bookmarks bar.
 
 ```javascript
 javascript:(function(){var el=document.createElement('script');el.src='https://zeman.github.io/perfmap/perfmap.js';document.body.appendChild(el);})();
 ```
-Wait for a page to fully load and then click the bookmarklet to overlay a performance heatmap.
+
+### Chrome Extension
+
+Or grab the [Chrome extension](https://chrome.google.com/webstore/detail/perfmap/hgpnhiajcdppfbogcpfdgcceepgkhdmk?hl=en&gl=GB) wrapped by [Umar Hansa](https://github.com/umaar)
+
+## Usage
+
+Wait for a page to fully load and then click the bookmarklet or extension icon to overlay a performance heatmap.
 
 The heatmap colours and the first ms value indicate at what point in the page load the image finished loading. It's a good indicator of user experience... "It took 3450ms before the user saw this image." The second value in brackets is the time it took the browser to load that specific image.
 
@@ -43,7 +48,8 @@ Chrome
 - 2014-10-07 Added background-image support
 - 2014-10-08 Added interactive legend with page level timing and timeline head on overlay hover
 - 2014-10-12 Ignore elements with visibility:hidden, check for viewport sized images and treat like a body image, design tweaks
+- 2014-10-17 Rolled in Umar's Chrome extension
 
 ##Thanks
 
-Big thanks to Steve Souders who was inspired enough to whip up the intial code structure while simultaneously participating at WebPerfDays NY. Clever cookie!
+Big thanks to [Steve Souders](http://www.stevesouders.com/) who was inspired enough to whip up the intial code structure while simultaneously participating at WebPerfDays NY. Clever cookie!
