@@ -32,7 +32,8 @@ Conceived as part of a set of [data visualization experiments](http://lab.speedc
 
 ##Works In
 
-Chrome
+- Chrome
+- Firefox - Can be enabled in Firefox by putting "about:config" in as a url and then setting "dom.enable_resource_timing" to true.
 
 ##To Do
 
