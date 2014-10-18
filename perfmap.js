@@ -4,7 +4,7 @@ var gWinWidth = window.innerWidth || document.documentElement.clientWidth;
 
 function findImages() {
     var aElems = document.getElementsByTagName('*');
-    var re = /url\((http.*)\)/ig;
+    var re = /url\(("?http.*"?)\)/ig;
     for ( var i=0, len = aElems.length; i < len; i++ ) {
         var elem = aElems[i];
         var style = window.getComputedStyle(elem);
@@ -13,22 +13,24 @@ function findImages() {
         var fixed = 0;
         var body = 0;
         re.lastIndex = 0; // reset state of regex so we catch repeating spritesheet elements
-        if (elem.tagName == 'IMG') {
+        if(elem.tagName == 'IMG') {
         	hasImage = 1;
 		}
-		if (style['background-image']) {
-        	var backgroundImage = style['background-image'];
-			var matches = re.exec(style['background-image']);
+		if(style['backgroundImage']) {
+        	var backgroundImage = style['backgroundImage'];
+			var matches = re.exec(style['backgroundImage']);
 			if (matches && matches.length > 1){
 				url = backgroundImage.substring(4);
 				url = url.substring(0, url.length - 1);
+				url = url.replace(/"/, "");
+				url = url.replace(/"/, "");
 				hasImage = 1;
 				if(elem.tagName == 'BODY'){
 					body = 1;
 				}
 			}
 		}
-		if (style['visibility'] == "hidden") {
+		if(style['visibility'] == "hidden") {
 			hasImage = 0;
 		}
 		if(hasImage == 1){
@@ -149,10 +151,12 @@ var backend = performance.timing.responseEnd - performance.timing.navigationStar
 var backendLeft = (backend / loaded)*100;
 
 // first paint in chrome from https://github.com/addyosmani/timing.js
+var hasFirstPaint = 0;
 if (window.chrome && window.chrome.loadTimes) {
 	var paint = window.chrome.loadTimes().firstPaintTime * 1000;
 	var firstPaint = paint - (window.chrome.loadTimes().startLoadTime*1000);
 	var firstPaintLeft = (firstPaint / loaded)*100;
+	hasFirstPaint = 1;
 }
 
 // remove any exisiting "perfmap" divs on second click
@@ -164,8 +168,12 @@ while(elements.length > 0){
 // build bottom legend
 var perfmap = document.createElement("div");
 perfmap.id = "perfmap";
+var legend = "<div style='width:16.666666667%; height: 50px; float:left; background-color:#1a9850;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#66bd63;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#a6d96a;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#fdae61;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#f46d43;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#d73027;'></div><div style='position:absolute; z-index:2; right:0px; padding-top:5px; padding-right:10px;height:100%;color:#fff;'>Fully Loaded " + parseInt(loaded) + "ms</div><div id='perfmap-timeline' style='position:absolute; z-index:4; left:-100px; border-left:2px solid white;height:100%;'></div>";
+if(hasFirstPaint == 1){
+	legend += "<div style='position:absolute; z-index:3; left:" + firstPaintLeft + "%; padding-top:5px; border-left:2px solid white;padding-left:5px;height:100%;color:#fff;'>First Paint " + parseInt(firstPaint) + "ms</div></div>";
+}
 perfmap.style.cssText = "position: fixed; width:100%; bottom:0; left:0; z-index:5000; height: 25px; color:#fff; font-family:\"Helvetica Neue\",sans-serif; font-size:14px; font-weight:800; line-height:14px;";
-perfmap.innerHTML = "<div style='width:16.666666667%; height: 50px; float:left; background-color:#1a9850;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#66bd63;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#a6d96a;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#fdae61;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#f46d43;'></div><div style='width:16.666666667%; height: 50px; float:left; background-color:#d73027;'></div><div style='position:absolute; z-index:2; right:0px; padding-top:5px; padding-right:10px;height:100%;color:#fff;'>Fully Loaded " + parseInt(loaded) + "ms</div><div style='position:absolute; z-index:3; left:" + firstPaintLeft + "%; padding-top:5px; border-left:2px solid white;padding-left:5px;height:100%;color:#fff;'>First Paint " + parseInt(firstPaint) + "ms</div><div id='perfmap-timeline' style='position:absolute; z-index:4; left:-100px; border-left:2px solid white;height:100%;'></div>";
+perfmap.innerHTML = legend;
 document.body.appendChild(perfmap);
 
 // build heatmap

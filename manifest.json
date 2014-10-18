@@ -1,0 +1,20 @@
+{
+  "name": "Perfmap",
+  "description": "Heatmap of resources loaded in the browser using the Resource Timing API",
+  "version": "1.1",
+  "permissions": [
+    "tabs", "http://*/*", "https://*/*"
+  ],
+  "browser_action": {
+      "default_icon": "logo-16.png"
+  },
+  "background": {
+      "scripts": ["background.js"]
+  },
+  "icons": {
+    "16": "logo-16.png",
+    "32": "logo-32.png",
+    "128": "logo-128.png"
+  },
+  "manifest_version": 2
+}
