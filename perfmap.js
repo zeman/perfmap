@@ -14,85 +14,85 @@ function findImages() {
         var body = 0;
         re.lastIndex = 0; // reset state of regex so we catch repeating spritesheet elements
         if(elem.tagName == 'IMG') {
-        	hasImage = 1;
-		}
-		if(style['backgroundImage']) {
-        	var backgroundImage = style['backgroundImage'];
-			var matches = re.exec(style['backgroundImage']);
-			if (matches && matches.length > 1){
-				url = backgroundImage.substring(4);
-				url = url.substring(0, url.length - 1);
-				url = url.replace(/"/, "");
-				url = url.replace(/"/, "");
-				hasImage = 1;
-				if(elem.tagName == 'BODY'){
-					body = 1;
-				}
-			}
-		}
-		if(style['visibility'] == "hidden") {
-			hasImage = 0;
-		}
-		if(hasImage == 1){
-	        if ( url ) {
-	            var entry = performance.getEntriesByName(url)[0];
-	            if ( entry ) {
-	                var xy = getCumulativeOffset(elem, url);
-	                var wh = elem.getBoundingClientRect();
-	                var width = wh.width;
-	                var height = wh.height;
-	                if(width > 10){
-		                if(height > 10){
-			                placeMarker(xy, width, height, entry, body, url);
-		                }
-	                }
-	            }
-	        }
-	    }
+            hasImage = 1;
+        }
+        if(style['backgroundImage']) {
+            var backgroundImage = style['backgroundImage'];
+            var matches = re.exec(style['backgroundImage']);
+            if (matches && matches.length > 1){
+                url = backgroundImage.substring(4);
+                url = url.substring(0, url.length - 1);
+                url = url.replace(/"/, "");
+                url = url.replace(/"/, "");
+                hasImage = 1;
+                if(elem.tagName == 'BODY'){
+                    body = 1;
+                }
+            }
+        }
+        if(style['visibility'] == "hidden") {
+            hasImage = 0;
+        }
+        if(hasImage == 1){
+            if ( url ) {
+                var entry = performance.getEntriesByName(url)[0];
+                if ( entry ) {
+                    var xy = getCumulativeOffset(elem, url);
+                    var wh = elem.getBoundingClientRect();
+                    var width = wh.width;
+                    var height = wh.height;
+                    if(width > 10){
+                        if(height > 10){
+                            placeMarker(xy, width, height, entry, body, url);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 function placeMarker(xy, width, height, entry, body, url) {
-	var heat = entry.responseEnd / loaded;
-	// adjust size of fonts/padding based on width of overlay
-	if(width < 170){
-		var padding = 12;
-		var size = 12;
-	}else if(width > 400){
-		var padding = 13;
-		var size = 26;
-	}else{
-		var padding = 9;
-		var size = 18;
-	}
-	// check for overlay that matches viewport and assume it's like a background image on body
-	if(width == document.documentElement.clientWidth){
-		if(height >= document.documentElement.clientHeight){
-			body = 1;
-		}
-	}
-	// adjust opacity if it's the body element and position label top right
-	if(body == 1){
-		var opacity = 0.6;
-		var size = 18;
-		var align = "right";
-		var paddingTop = 10;
-		var bodyText = "BODY ";
-	}else{
-		var opacity = 0.925;
-		var align = "center";
-		var paddingTop = (height/2)-padding;
-		var bodyText = "";
-	}
+    var heat = entry.responseEnd / loaded;
+    // adjust size of fonts/padding based on width of overlay
+    if(width < 170){
+        var padding = 12;
+        var size = 12;
+    }else if(width > 400){
+        var padding = 13;
+        var size = 26;
+    }else{
+        var padding = 9;
+        var size = 18;
+    }
+    // check for overlay that matches viewport and assume it's like a background image on body
+    if(width == document.documentElement.clientWidth){
+        if(height >= document.documentElement.clientHeight){
+            body = 1;
+        }
+    }
+    // adjust opacity if it's the body element and position label top right
+    if(body == 1){
+        var opacity = 0.6;
+        var size = 18;
+        var align = "right";
+        var paddingTop = 10;
+        var bodyText = "BODY ";
+    }else{
+        var opacity = 0.925;
+        var align = "center";
+        var paddingTop = (height/2)-padding;
+        var bodyText = "";
+    }
     var marker = document.createElement("div");
     marker.className = "perfmap";
     marker.setAttribute("data-ms", parseInt(entry.responseEnd));
     marker.setAttribute("data-body", body);
     marker.style.cssText = "position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: " + size + "px; font-weight:800; font-family:\"Helvetica Neue\",sans-serif; text-align:" + align + "; opacity: " + opacity + "; " + heatmap(heat) + " top: " + xy.top + "px; left: " + xy.left + "px; width: " + width + "px; height:" + height + "px; padding-top:" + paddingTop + "px; z-index: 4000;";
     if(width > 50){
-    	if(height > 15 ){
-    		marker.innerHTML = bodyText + parseInt(entry.responseEnd) + "ms (" + parseInt(entry.duration) + "ms)";
-    	}
+        if(height > 15 ){
+            marker.innerHTML = bodyText + parseInt(entry.responseEnd) + "ms (" + parseInt(entry.duration) + "ms)";
+        }
     }
     document.body.appendChild(marker);
 }
