@@ -88,6 +88,7 @@ function placeMarker(xy, width, height, entry, body, url) {
     marker.className = "perfmap";
     marker.setAttribute("data-ms", parseInt(entry.responseEnd));
     marker.setAttribute("data-body", body);
+    marker.setAttribute("dir", "ltr"); // Force LTR display even if injected on an RTL page
     marker.style.cssText = "position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: " + size + "px; font-weight:800; font-family:\"Helvetica Neue\",sans-serif; text-align:" + align + "; opacity: " + opacity + "; " + heatmap(heat) + " top: " + xy.top + "px; left: " + xy.left + "px; width: " + width + "px; height:" + height + "px; padding-top:" + paddingTop + "px; z-index: 4000;";
     if(width > 50){
         if(height > 15 ){
