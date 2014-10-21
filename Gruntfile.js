@@ -31,12 +31,7 @@ module.exports = function(grunt) {
 			// Your project's source files
 			src: 'src/**/*.js',
 			options: {
-
-				// Your Jasmine spec files
-				specs: 'specs/**/*spec.js',
-				// Your spec helper files
-				helpers: 'helper/*.js'
-				// etc.
+				specs: 'specs/**/*spec.js'
 			}
 		},
 		lenient: {
@@ -54,6 +49,7 @@ module.exports = function(grunt) {
 
 	// Default task.
 	grunt.registerTask('default', ['jshint', 'jasmine', 'concat:dist']);
+	grunt.registerTask('test', ['jasmine']);
 	grunt.registerTask('build', ['concat:dist', 'lenient', 'wrap:basic']);
 
 };
