@@ -4,6 +4,7 @@ function findImages() {
     var tags = document.getElementsByTagName('*'),
         images = document.getElementsByTagName('img'),
         el,
+        len,
         imgs = [];
     //re = /url\(([http].*)\)/ig;
     //re = /(url)\((.*?)\)/ig;

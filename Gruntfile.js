@@ -22,7 +22,8 @@ module.exports = function(grunt) {
 			}
 		},
 		jshint: {
-			src: ['src/**/*.js'],
+			//src: ['src/**/*.js'],
+			src: ['build/perfmap.js'],
 			options: {
 				jshintrc: '.jshintrc'
 			}
@@ -48,8 +49,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 
 	// Default task.
-	grunt.registerTask('default', ['jshint', 'jasmine', 'concat:dist']);
+	grunt.registerTask('default', ['jasmine', 'concat:dist', 'jshint']);
 	grunt.registerTask('test', ['jasmine']);
-	grunt.registerTask('build', ['concat:dist', 'lenient', 'wrap:basic']);
+	grunt.registerTask('build', ['concat:dist', 'lenient', 'wrap:basic', 'jasmine', 'jshint']);
 
 };
