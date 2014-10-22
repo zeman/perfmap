@@ -14,6 +14,8 @@ function findImages() {
     for (var j = 0; j < len; j++) {
         el = getBgElement(tags[j]);
         if (!!el && !!el.src) {
+            el.bgImg = el.src;
+
             var match = el.src.match(/\((.*?)\)/);
             if (match[1]) {
                 el.src = match[1].replace(/('|")/g, '');
@@ -37,13 +39,13 @@ function findImages() {
     for (var i = 0; i < len; i++) {
         var entry = window.performance.getEntriesByName(imgs[i].src)[0];
         if (entry) {
-            var xy = getCumulativeOffset(imgs[i].element, imgs[i].src);
+            //var xy = getCumulativeOffset(imgs[i].element, imgs[i].src);
             var wh = imgs[i].element.getBoundingClientRect();
             var width = wh.width;
             var height = wh.height;
             if (width > 10) {
                 if (height > 10) {
-                    placeMarker(xy, width, height, entry, imgs[i].element.tagName === 'BODY', imgs[i].src);
+                    placeMarker(width, height, entry, imgs[i].element.tagName === 'BODY', imgs[i].src, imgs[i]);
                 }
             }
         }

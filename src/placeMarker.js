@@ -1,6 +1,7 @@
 'use strict';
 
-function placeMarker(xy, width, height, entry, body, url) {
+function placeMarker(width, height, entry, body, url, el) {
+    //background-image: linear-gradient(90deg, rgba(253, 174, 97, 0.95), rgba(253, 174, 97, 0.95));
     var heat = (entry.responseEnd / loaded),
         marker = document.createElement('div'),
         padding = 9,
@@ -33,15 +34,38 @@ function placeMarker(xy, width, height, entry, body, url) {
         paddingTop = 10;
         bodyText = 'BODY ';
     }
+    var elem = el.element;
+    //debugger;
+    var oldClass = elem.className;
+    elem.className = oldClass + ' perfmap';
+    elem.setAttribute('data-ms', parseInt(entry.responseEnd));
+    elem.setAttribute('data-body', (body ? 1 : 0));
+    var oldStyle = elem.style.cssText;
+    var bgImg = '';
+    if (!!el.bgImg) {
+        bgImg = ', ' + el.bgImg;
+    } else {
+        //debugger;
+        bgImg = ', url("' + elem.src + '") ';
 
-    marker.className = 'perfmap';
-    marker.setAttribute('data-ms', parseInt(entry.responseEnd));
-    marker.setAttribute('data-body', (body ? 1 : 0));
-    marker.style.cssText = 'position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: ' + size + 'px; font-weight:800; font-family:"Helvetica Neue",sans-serif; text-align:' + align + '; opacity: ' + opacity + '; background: ' + heatmap(heat).value + '; top: ' + xy.top + 'px; left: ' + xy.left + 'px; width: ' + width + 'px; height:' + height + 'px; padding-top:' + paddingTop + 'px; z-index: 4000;';
-    if (width > 50) {
-        if (height > 15) {
-            marker.innerHTML = bodyText + parseInt(entry.responseEnd) + 'ms (' + parseInt(entry.duration) + 'ms)';
-        }
+        var style = elem.currentStyle || window.getComputedStyle(elem, false);
+        //console.log(style.getPropertyValue('background-image'));
+        oldStyle += 'width: ' + (style.getPropertyValue('width') || width + 'px') + '!important;';
+        oldStyle += 'height: ' + ( style.getPropertyValue('height') || height + 'px') + '!important;';
+        elem.removeAttribute("src");
     }
-    document.body.appendChild(marker);
+    var bgPosition = 'background-position: 0px 0px';
+    if (!!el.position) {
+        bgPosition += ', ' + el.position;
+    }
+
+    elem.style.cssText = oldStyle + ' background-image: linear-gradient(' + heatmap(heat).rgba + ', ' + heatmap(heat).rgba + ')' + bgImg + '; ' + bgPosition + '; background-size: contain;';
+    //elem.style.cssText = 'position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: ' + size + 'px; font-weight:800; font-family:"Helvetica Neue",sans-serif; text-align:' + align + '; opacity: ' + opacity + '; background: ' + heatmap(heat).value + '; top: ' + xy.top + 'px; left: ' + xy.left + 'px; width: ' + width + 'px; height:' + height + 'px; padding-top:' + paddingTop + 'px; z-index: 4000;';
+    // if (width > 50) {
+    //     if (height > 15) {
+    //         oldStyle = elem.style.cssText;
+    //         elem.style.cssText =  oldStyle + ' content: "' + bodyText + parseInt(entry.responseEnd) + 'ms (' + parseInt(entry.duration) + 'ms)";';
+    //     }
+    // }
+    //document.body.appendChild(marker);
 }

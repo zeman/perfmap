@@ -9,22 +9,28 @@ var perfMap = {},
     gZeroTop = 0,
     hArr = [{
         threashold: 0.16,
-        value: '#1a9850'
+        value: '#1a9850',
+        rgba: 'rgba(26, 152, 80, 0.95)'
     }, {
         threashold: 0.32,
-        value: '#66bd63'
+        value: '#66bd63',
+        rgba: 'rgba(102, 189, 99, 0.95)'
     }, {
         threashold: 0.48,
-        value: '#a6d964'
+        value: '#a6d964',
+        rgba: 'rgba(166, 217, 100, 0.95)'
     }, {
         threashold: 0.64,
-        value: '#fdae61'
+        value: '#fdae61',
+        rgba: 'rgba(253, 174, 97, 0.95)'
     }, {
         threashold: 0.8,
-        value: '#f46d43'
+        value: '#f46d43',
+        rgba: 'rgba(244, 109, 67, 0.95)'
     }, {
         threashold: 1.1,
-        value: '#d73027'
+        value: '#d73027',
+        rgba: 'rgba(215, 48, 39, 0.95)'
     }];
 
 
@@ -42,6 +48,8 @@ function findImages() {
     for (var j = 0; j < len; j++) {
         el = getBgElement(tags[j]);
         if (!!el && !!el.src) {
+            el.bgImg = el.src;
+
             var match = el.src.match(/\((.*?)\)/);
             if (match[1]) {
                 el.src = match[1].replace(/('|")/g, '');
@@ -65,35 +73,37 @@ function findImages() {
     for (var i = 0; i < len; i++) {
         var entry = window.performance.getEntriesByName(imgs[i].src)[0];
         if (entry) {
-            var xy = getCumulativeOffset(imgs[i].element, imgs[i].src);
+            //var xy = getCumulativeOffset(imgs[i].element, imgs[i].src);
             var wh = imgs[i].element.getBoundingClientRect();
             var width = wh.width;
             var height = wh.height;
             if (width > 10) {
                 if (height > 10) {
-                    placeMarker(xy, width, height, entry, imgs[i].element.tagName === 'BODY', imgs[i].src);
+                    placeMarker(width, height, entry, imgs[i].element.tagName === 'BODY', imgs[i].src, imgs[i]);
                 }
             }
         }
     }
 }
 
+
 function getBgElement(el) {
     /*jshint sub: true */
     //console.log(el.className);
     var style = el.currentStyle || window.getComputedStyle(el, false);
     //console.log(style.getPropertyValue('background-image'));
-    if (style.getPropertyValue('background-image')  !== 'none') {
+    if (style.getPropertyValue('background-image') !== 'none') {
         return {
-                element: el,
-                src: style.getPropertyValue('background-image')
-            };
+            element: el,
+            src: style.getPropertyValue('background-image'),
+            position: style.getPropertyValue('background-position')
+        };
     }
     return null;
 }
 
 
-function getCumulativeOffset(obj, url) {
+/*function getCumulativeOffset(obj, url) {
     var left, top;
     left = top = 0;
     if (obj.offsetParent) {
@@ -110,7 +120,7 @@ function getCumulativeOffset(obj, url) {
         left: left,
         top: top,
     };
-}
+}*/
 
 
 function getTagImages(document) {
@@ -162,22 +172,27 @@ perfMap.init = function() {
         elements[i].onmouseover = function() {
             timelineLeft = document.documentElement.clientWidth * (this.dataset.ms / loaded);
             if (this.dataset.body !=='1') {
-                this.style.opacity = 1;
+                //this.style.opacity = 1;
+                this.style.cssText = this.style.cssText.replace(/(\d\.\d*)\)/g, '0.1)');
+                timeline.style.cssText = 'opacity:1; transition: 0.5s ease-in-out; transform: translate(' + parseInt(timelineLeft) + 'px,0); position:absolute; z-index:4; border-left:2px solid white; height:100%;';
             }
-            timeline.style.cssText = 'opacity:1; transition: 0.5s ease-in-out; transform: translate(' + parseInt(timelineLeft) + 'px,0); position:absolute; z-index:4; border-left:2px solid white; height:100%;';
+            
         };
         elements[i].onmouseout = function() {
             timelineLeft = document.documentElement.clientWidth * (this.dataset.ms / loaded);
             if (this.dataset.body !== '1') {
-                this.style.opacity = 0.925;
+                //this.style.opacity = 0.925;
+                this.style.cssText = this.style.cssText.replace(/(\d\.\d*)\)/g, '0.95)');
+                timeline.style.cssText = 'opacity:0; transition: 0.5s ease-in-out; transform: translate(' + parseInt(timelineLeft) + 'px,0); position:absolute; z-index:4; border-left:2px solid white; height:100%;';
             }
-            timeline.style.cssText = 'opacity:0; transition: 0.5s ease-in-out; transform: translate(' + parseInt(timelineLeft) + 'px,0); position:absolute; z-index:4; border-left:2px solid white; height:100%;';
+            
         };
     }
 };
 
 
-function placeMarker(xy, width, height, entry, body, url) {
+function placeMarker(width, height, entry, body, url, el) {
+    //background-image: linear-gradient(90deg, rgba(253, 174, 97, 0.95), rgba(253, 174, 97, 0.95));
     var heat = (entry.responseEnd / loaded),
         marker = document.createElement('div'),
         padding = 9,
@@ -210,17 +225,40 @@ function placeMarker(xy, width, height, entry, body, url) {
         paddingTop = 10;
         bodyText = 'BODY ';
     }
+    var elem = el.element;
+    //debugger;
+    var oldClass = elem.className;
+    elem.className = oldClass + ' perfmap';
+    elem.setAttribute('data-ms', parseInt(entry.responseEnd));
+    elem.setAttribute('data-body', (body ? 1 : 0));
+    var oldStyle = elem.style.cssText;
+    var bgImg = '';
+    if (!!el.bgImg) {
+        bgImg = ', ' + el.bgImg;
+    } else {
+        //debugger;
+        bgImg = ', url("' + elem.src + '") ';
 
-    marker.className = 'perfmap';
-    marker.setAttribute('data-ms', parseInt(entry.responseEnd));
-    marker.setAttribute('data-body', (body ? 1 : 0));
-    marker.style.cssText = 'position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: ' + size + 'px; font-weight:800; font-family:"Helvetica Neue",sans-serif; text-align:' + align + '; opacity: ' + opacity + '; background: ' + heatmap(heat).value + '; top: ' + xy.top + 'px; left: ' + xy.left + 'px; width: ' + width + 'px; height:' + height + 'px; padding-top:' + paddingTop + 'px; z-index: 4000;';
-    if (width > 50) {
-        if (height > 15) {
-            marker.innerHTML = bodyText + parseInt(entry.responseEnd) + 'ms (' + parseInt(entry.duration) + 'ms)';
-        }
+        var style = elem.currentStyle || window.getComputedStyle(elem, false);
+        //console.log(style.getPropertyValue('background-image'));
+        oldStyle += 'width: ' + (style.getPropertyValue('width') || width + 'px') + '!important;';
+        oldStyle += 'height: ' + ( style.getPropertyValue('height') || height + 'px') + '!important;';
+        elem.removeAttribute("src");
     }
-    document.body.appendChild(marker);
+    var bgPosition = 'background-position: 0px 0px';
+    if (!!el.position) {
+        bgPosition += ', ' + el.position;
+    }
+
+    elem.style.cssText = oldStyle + ' background-image: linear-gradient(' + heatmap(heat).rgba + ', ' + heatmap(heat).rgba + ')' + bgImg + '; ' + bgPosition + '; background-size: contain;';
+    //elem.style.cssText = 'position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: ' + size + 'px; font-weight:800; font-family:"Helvetica Neue",sans-serif; text-align:' + align + '; opacity: ' + opacity + '; background: ' + heatmap(heat).value + '; top: ' + xy.top + 'px; left: ' + xy.left + 'px; width: ' + width + 'px; height:' + height + 'px; padding-top:' + paddingTop + 'px; z-index: 4000;';
+    // if (width > 50) {
+    //     if (height > 15) {
+    //         oldStyle = elem.style.cssText;
+    //         elem.style.cssText =  oldStyle + ' content: "' + bodyText + parseInt(entry.responseEnd) + 'ms (' + parseInt(entry.duration) + 'ms)";';
+    //     }
+    // }
+    //document.body.appendChild(marker);
 }
 
 

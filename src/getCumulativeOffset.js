@@ -1,6 +1,6 @@
 'use strict';
 
-function getCumulativeOffset(obj, url) {
+/*function getCumulativeOffset(obj, url) {
     var left, top;
     left = top = 0;
     if (obj.offsetParent) {
@@ -17,4 +17,4 @@ function getCumulativeOffset(obj, url) {
         left: left,
         top: top,
     };
-}
+}*/
