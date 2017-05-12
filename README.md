@@ -1,4 +1,4 @@
-#PerfMap: front-end performance heatmap
+# PerfMap: front-end performance heatmap
 
 A bookmarklet and [Chrome extension](https://chrome.google.com/webstore/detail/perfmap/hgpnhiajcdppfbogcpfdgcceepgkhdmk?hl=en&gl=GB) to create a front-end performance heatmap of resources loaded in the browser using the Resource Timing API. A browser with [support for the Resource Timing API](http://caniuse.com/#feat=resource-timing) is required.
 
@@ -22,20 +22,20 @@ The heatmap colours and the first ms value indicate at what point in the page lo
 
 The legend attached to the bottom of the page shows timings for the full page load and hovering over a coloured area on the heatmap will move the timeline indicator to show you when that image was fully loaded.
 
-##Example
+## Example
 
 ![Example Heatmap](http://zeman.github.io/perfmap/example.jpg)
 
-##Background
+## Background
 
 Conceived as part of a set of [data visualization experiments](http://lab.speedcurve.com) which re-imagined the front-end performance waterfall chart by Mark Zeman from [SpeedCurve](http://speedcurve.com) presented at [Velocity New York 2014.](http://speedcurve.com/blog/velocity-a-better-waterfall-chart/)
 
-##Works In
+## Works In
 
 - Chrome
 - Firefox - Can be enabled in Firefox by putting "about:config" in as a url and then setting "dom.enable_resource_timing" to true.
 
-##To Do
+## To Do
 
 - Deal with fixed position elements (calling all front-end ninjas, send me your thoughts on how best to do this)
 - Crawl iframe images
@@ -43,7 +43,7 @@ Conceived as part of a set of [data visualization experiments](http://lab.speedc
 - User timing, pull out and highlight any elements with associated user timing events
 - Expand top nav to show full waterfall chart of all resources. Combine with Andy's [waterfall bookmarklet?](https://github.com/andydavies/waterfall)
 
-##Change Log
+## Change Log
 
 - 2014-10-06 First push of rough proof of concept
 - 2014-10-07 Added background-image support
@@ -51,6 +51,6 @@ Conceived as part of a set of [data visualization experiments](http://lab.speedc
 - 2014-10-12 Ignore elements with visibility:hidden, check for viewport sized images and treat like a body image, design tweaks
 - 2014-10-17 Rolled in Umar's Chrome extension
 
-##Thanks
+## Thanks
 
 Big thanks to [Steve Souders](http://www.stevesouders.com/) who was inspired enough to whip up the intial code structure while simultaneously participating at WebPerfDays NY. Clever cookie!
