@@ -37,13 +37,14 @@ function findImages() {
             if ( url ) {
                 var entry = performance.getEntriesByName(url)[0];
                 if ( entry ) {
+                    var position = getPositionOfMarker(elem);
                     var xy = getCumulativeOffset(elem, url);
                     var wh = elem.getBoundingClientRect();
                     var width = wh.width;
                     var height = wh.height;
                     if(width > 10){
                         if(height > 10){
-                            placeMarker(xy, width, height, entry, body, url);
+                            placeMarker(xy, width, height, position, entry, body, url);
                         }
                     }
                 }
@@ -51,8 +52,19 @@ function findImages() {
         }
     }
 }
+function getPositionOfMarker(element) {
+    var parentElem = element.parentElement;
+    while (parentElem) {
+        var style = window.getComputedStyle(parentElem);
+        if (style["position"] == "fixed") {
+            return "fixed";
+        }
+        parentElem = parentElem.parentElement;
+    }
+    return "absolute";
+}
 
-function placeMarker(xy, width, height, entry, body, url) {
+function placeMarker(xy, width, height, position, entry, body, url) {
     var heat = entry.responseEnd / loaded;
     // adjust size of fonts/padding based on width of overlay
     if(width < 170){
@@ -89,7 +101,7 @@ function placeMarker(xy, width, height, entry, body, url) {
     marker.setAttribute("data-ms", parseInt(entry.responseEnd));
     marker.setAttribute("data-body", body);
     marker.setAttribute("dir", "ltr"); // Force LTR display even if injected on an RTL page
-    marker.style.cssText = "position:absolute; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: " + size + "px; font-weight:800; font-family:\"Helvetica Neue\",sans-serif; text-align:" + align + "; opacity: " + opacity + "; " + heatmap(heat) + " top: " + xy.top + "px; left: " + xy.left + "px; width: " + width + "px; height:" + height + "px; padding-top:" + paddingTop + "px; z-index: 4000;";
+    marker.style.cssText = "position:"+ position + "; transition: 0.5s ease-in-out; box-sizing: border-box; color: #fff; padding-left:10px; padding-right:10px; line-height:14px; font-size: " + size + "px; font-weight:800; font-family:\"Helvetica Neue\",sans-serif; text-align:" + align + "; opacity: " + opacity + "; " + heatmap(heat) + " top: " + xy.top + "px; left: " + xy.left + "px; width: " + width + "px; height:" + height + "px; padding-top:" + paddingTop + "px; z-index: 4000;";
     if(width > 50){
         if(height > 15 ){
             marker.innerHTML = bodyText + parseInt(entry.responseEnd) + "ms (" + parseInt(entry.duration) + "ms)";
